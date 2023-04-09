@@ -4,19 +4,19 @@ void blink(int, int); // blink the LEDs function
 
 int main(void) {
   char message[100];
-  int b; //number of blinks
-  int time; //blink period
+  int b;
+  int time;
   
   NU32DIP_Startup(); // cache on, interrupts on, LED/button init, UART init
   while (1) {
-    NU32DIP_WriteUART1("Please enter the number of blinks and the blink period: \r\n"); // ask the user to input the number of blinks and blink period
-    NU32DIP_ReadUART1(message, 100);
-    NU32DIP_WriteUART1(message);
-    NU32DIP_WriteUART1("\r\n");
-    sscanf(message, "%d %d", &b, &time);
-    if (NU32DIP_USER) {
-        blink(b, time); //blink with the specifications of the user
-    }
+      NU32DIP_WriteUART1("Enter the number of blinks and blink period: \r\n");
+      NU32DIP_ReadUART1(message, 100);
+      NU32DIP_WriteUART1(message);
+      NU32DIP_WriteUART1("\r\n");
+      sscanf(message, "%d %d", &b, &time);
+	if (NU32DIP_USER){
+		blink(b, time); // 5 times, 500ms each time
+	}
   }
 }
 
@@ -39,4 +39,4 @@ void blink(int iterations, int time_ms){
 		while(_CP0_GET_COUNT() < t + 12000*time_ms){}
 	}
 }
-			
+		
