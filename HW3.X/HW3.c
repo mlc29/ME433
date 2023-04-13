@@ -22,9 +22,6 @@ int main(void) {
         else if (NU32DIP_USER) { // check if button is released
             buttonPressed = 0; // clear buttonPressed flag
         }
-        /*else {
-            NU32DIP_WriteUART1(""); // send empty string to terminal emulator when button is held
-        }*/
         _CP0_SET_COUNT(0);
         while(_CP0_GET_COUNT() < 2400000) {}
     }
