@@ -1,0 +1,5 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "H24")(type "KiCad")(uri "C:/Users/marcu/Documents/GitHub/ME433/HW4/H24.pretty")(options "")(descr ""))
+  (lib (name "HW4")(type "KiCad")(uri "${KIPRJMOD}/HW4.pretty")(options "")(descr ""))
+)
