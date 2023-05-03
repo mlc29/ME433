@@ -78,11 +78,31 @@ LDLIBSOPTIONS=
 # fixDeps replaces a bunch of sed/cat/printf statements that slow down the build
 FIXDEPS=fixDeps
 
+# The following macros may be used in the pre and post step lines
+_/_=\\
+ShExtension=.bat
+Device=PIC32MX170F256B
+ProjectDir="C:\Users\marcu\Documents\GitHub\ME433\HW8.X"
+ProjectName=HW8
+ConfName=default
+ImagePath="dist\default\${IMAGE_TYPE}\HW8.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}"
+ImageDir="dist\default\${IMAGE_TYPE}"
+ImageName="HW8.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}"
+ifeq ($(TYPE_IMAGE), DEBUG_RUN)
+IsDebug="true"
+else
+IsDebug="false"
+endif
+
 .build-conf:  ${BUILD_SUBPROJECTS}
 ifneq ($(INFORMATION_MESSAGE), )
 	@echo $(INFORMATION_MESSAGE)
 endif
 	${MAKE}  -f nbproject/Makefile-default.mk ${DISTDIR}/HW8.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+	@echo "--------------------------------------"
+	@echo "User defined post-build step: ["C:\Users\marcu\Documents\GitHub\ME433\boot/nu32utility.exe" COM3 ${ImagePath}]"
+	@"C:\Users\marcu\Documents\GitHub\ME433\boot/nu32utility.exe" COM3 ${ImagePath}
+	@echo "--------------------------------------"
 
 MP_PROCESSOR_OPTION=32MX170F256B
 MP_LINKER_FILE_OPTION=,--script="NU32DIPbootloaded.ld"
