@@ -17,7 +17,7 @@ int main(void) {
 	
 	// read whoami
     unsigned char who;
-    who = whoami;
+    who = whoami();
     
 	// print whoami
     char m[100];
@@ -27,7 +27,7 @@ int main(void) {
 	// if whoami is not 0x68, stuck in loop with LEDs on
     if(who != 0x68){
         while(1){
-            blink(1,5);
+            blink(1,1000);
         }
     }
     
@@ -37,7 +37,8 @@ int main(void) {
     while (1) {
 		// use core timer for exactly 100Hz loop
         _CP0_SET_COUNT(0);
-        blink(1, 5);
+        NU32DIP_GREEN=1;
+        NU32DIP_YELLOW=0;
 
         // read IMU
         burst_read_mpu6050(d);
