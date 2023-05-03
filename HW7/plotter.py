@@ -30,8 +30,8 @@ class Plotter:
         self.line = Line2D(self.tdata, self.ydata)
 
         self.ax.add_line(self.line)
-        self.ax.set_ylim(0, 3.3)
-        self.ax.set_xlim(-2,2) #0, self.maxt
+        self.ax.set_ylim(-2, 2)
+        self.ax.set_xlim(0, self.maxt) 
 
     def update(self, y):
         lastt = self.tdata[-1]
@@ -66,7 +66,7 @@ def serial_getter():
 
 # hard coded serial port name, timeout after 2 minutes
 ser = serial.Serial("COM3", 230400, timeout=120)
-
+ser.write(b'\n')
 fig, ax = plt.subplots()
 plotter = Plotter(ax)
 
