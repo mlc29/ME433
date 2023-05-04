@@ -29,6 +29,7 @@ int main(void){
     unsigned char fps;
     
     while(1){
+        /*
         burst_read_mpu6050(d);  // Read and convert z acceleration from mpu
         az = conv_zXL(d);
         
@@ -42,7 +43,11 @@ int main(void){
         sprintf(s,"%d FPS",t);
         drawMessage(s,0,20);
         ssd1306_update();
+        */
         
+        sprintf(s,"Go U Northwestern, break right through that line. With our colors");
+        drawMessage(s,0,0);
+        ssd1306_update();
         while(_CP0_GET_COUNT()<12000000){}
     }
 }
@@ -98,7 +103,15 @@ void drawChar(unsigned char character, unsigned char x, unsigned char y){
 void drawMessage(unsigned char *m, unsigned char x, unsigned char y){
     int k=0;
     while(m[k] != 0){
-        drawChar(m[k], x+6*k, y);   // add 6 to x to get a space in between characters
+        if(k<=20){
+            drawChar(m[k], x+6*k, y);   // add 6 to x to get a space in between characters
+        }
+        else if(k>=21 && k<=41){
+            drawChar(m[k], x+6*(k-21), y+9);   // move to a new line (y+9) and go back to x=0
+        }
+        else if(k>=42 && k<=62) {
+            drawChar(m[k], x+6*(k-42), y+18);   // move to a new line (y+18) and go back to x=0
+        }
         k++;
     }
     
