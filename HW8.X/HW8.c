@@ -6,40 +6,44 @@
 #include "ssd1306.h"
 
 void blink(int iterations, int time_ms);
-void drawChar(char character, char x, char y);
-
+void drawChar(unsigned char character, unsigned char x, unsigned char y);
+void drawMessage(unsigned char *m, unsigned char x, unsigned char y);
 
 int main(void){
     
-    // Setup the PIC and OLED screen
+    // Setup the PIC, MPU, and OLED screen
     NU32DIP_Startup();
     i2c_master_setup();
     ssd1306_setup();
-    char m[100];
+    init_mpu6050();
+    
+    // message holder
+    unsigned char s[100];
+    
+    // variables for acceleration data
+    unsigned char d[14];
+    float ax, ay, az, gx, gy, gz, T;
+    
+    // variables for fps calculation
+    int t;
+    unsigned char fps;
     
     while(1){
-        _CP0_SET_COUNT(0);
-        blink(1,50);         // Blink LEDs for heartbeat
+        burst_read_mpu6050(d);  // Read and convert z acceleration from mpu
+        az = conv_zXL(d);
         
-        sprintf(m,"Hello World!");
-        drawChar(m[0],0,0);
-        drawChar(m[1],6,0);
-        drawChar(m[2],12,0);
-        drawChar(m[3],18,0);
-        drawChar(m[4],24,0);
-        drawChar(m[5],30,0);
-        drawChar(m[6],36,0);
-        drawChar(m[7],42,0);
-        drawChar(m[8],48,0);
-        drawChar(m[9],54,0);
-        drawChar(m[10],60,0);
-        drawChar(m[11],66,0);
+        _CP0_SET_COUNT(0);      // start timer to find fps
+        sprintf(s,"%f",az);
+        drawMessage(s,0,0);
         ssd1306_update();
         
+        t = _CP0_GET_COUNT();   // get time passed to calculate fps
+        t = 24000000/t;
+        sprintf(s,"%d FPS",t);
+        drawMessage(s,0,20);
+        ssd1306_update();
         
-        
-        
-        while(_CP0_GET_COUNT()<48000000){}
+        while(_CP0_GET_COUNT()<12000000){}
     }
 }
 
@@ -73,13 +77,29 @@ void blink(int iterations, int time_ms) {
  * x: x position on screen
  * y: y position on screen
  */
-void drawChar(char character, char x, char y){
+void drawChar(unsigned char character, unsigned char x, unsigned char y){
     int i,j;
     unsigned char col;
     for (i=0; i<5; i++){
-        col = ASCII[character-0x20][i];
+        col = ASCII[character-0x20][i];     // get the ith column of the desired character from ASCII table
         for (j=0; j<8; j++){
-            ssd1306_drawPixel(x+i, y+j, (col>>j)&0b1);
+            ssd1306_drawPixel(x+i, y+j, (col>>j)&0b1);  // draw individual pixels as on or off based on ASCII table
         }
     }
+}
+
+
+/* drawMessage function writes a full string to the screen starting at the specified position
+ * 
+ * *m: pointer to a string m
+ * x: starting x position
+ * y: starting y position
+ */
+void drawMessage(unsigned char *m, unsigned char x, unsigned char y){
+    int k=0;
+    while(m[k] != 0){
+        drawChar(m[k], x+6*k, y);   // add 6 to x to get a space in between characters
+        k++;
+    }
+    
 }
