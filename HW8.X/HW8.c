@@ -6,26 +6,45 @@
 #include "ssd1306.h"
 
 void blink(int iterations, int time_ms);
+void drawChar(char character, char x, char y);
 
 
 int main(void){
     
     // Setup the PIC and OLED screen
     NU32DIP_Startup();
+    i2c_master_setup();
     ssd1306_setup();
+    char m[100];
     
     while(1){
         _CP0_SET_COUNT(0);
         blink(1,50);         // Blink LEDs for heartbeat
-        ssd1306_drawPixel(1,1,1);
+        
+        sprintf(m,"Hello World!");
+        drawChar(m[0],0,0);
+        drawChar(m[1],6,0);
+        drawChar(m[2],12,0);
+        drawChar(m[3],18,0);
+        drawChar(m[4],24,0);
+        drawChar(m[5],30,0);
+        drawChar(m[6],36,0);
+        drawChar(m[7],42,0);
+        drawChar(m[8],48,0);
+        drawChar(m[9],54,0);
+        drawChar(m[10],60,0);
+        drawChar(m[11],66,0);
         ssd1306_update();
+        
+        
+        
         
         while(_CP0_GET_COUNT()<48000000){}
     }
 }
 
 
-// blink the LEDs
+// function to blink the LEDs
 void blink(int iterations, int time_ms) {
     int i;
     unsigned int t;
@@ -47,3 +66,20 @@ void blink(int iterations, int time_ms) {
     }
 }
 
+
+/* drawChar function draws desired character at specified position
+ * 
+ * character: the character that should be drawn on screen
+ * x: x position on screen
+ * y: y position on screen
+ */
+void drawChar(char character, char x, char y){
+    int i,j;
+    unsigned char col;
+    for (i=0; i<5; i++){
+        col = ASCII[character-0x20][i];
+        for (j=0; j<8; j++){
+            ssd1306_drawPixel(x+i, y+j, (col>>j)&0b1);
+        }
+    }
+}
