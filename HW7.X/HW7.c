@@ -21,7 +21,7 @@ int main(void) {
     
 	// print whoami
     char m[100];
-    sprintf(m,"0x%X\r\n");
+    sprintf(m,"0x%X\r\n",who);
     NU32DIP_WriteUART1(m);
     
 	// if whoami is not 0x68, stuck in loop with LEDs on
