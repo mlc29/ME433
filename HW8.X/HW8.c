@@ -18,7 +18,8 @@ int main(void){
     init_mpu6050();
     
     // message holder
-    unsigned char s[100];
+    unsigned char s[62];
+    unsigned char message[100];
     
     // variables for acceleration data
     unsigned char d[14];
@@ -45,7 +46,12 @@ int main(void){
         ssd1306_update();
         */
         
-        sprintf(s,"Go U Northwestern, break right through that line. With our colors");
+        NU32DIP_WriteUART1("Write your message here:\r\n");
+        NU32DIP_ReadUART1(s,62);
+        NU32DIP_WriteUART1(s);
+        NU32DIP_WriteUART1("\r\n");
+        
+        ssd1306_clear();
         drawMessage(s,0,0);
         ssd1306_update();
         while(_CP0_GET_COUNT()<12000000){}
@@ -114,5 +120,4 @@ void drawMessage(unsigned char *m, unsigned char x, unsigned char y){
         }
         k++;
     }
-    
 }
