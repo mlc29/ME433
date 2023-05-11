@@ -24,7 +24,7 @@ void ws2812b_setup() {
 void ws2812b_setColor(wsColor * c, int numLEDs) {
     int i = 0; int j = 0; // for loops
     int numBits = 2 * 3 * 8 * numLEDs; // the number of high/low bits to store, 2 per color bit
-    volatile unsigned int delay_times[numBits]; // I only gave you 5 WS2812B, adjust this if you get more somewhere
+    volatile unsigned int delay_times[2*3*8 * 5]; // I only gave you 5 WS2812B, adjust this if you get more somewhere
 
     // start at time at 0
     delay_times[0] = 0;

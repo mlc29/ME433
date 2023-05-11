@@ -6,18 +6,16 @@ int main(void) {
     NU32DIP_Startup();
     ws2812b_setup();
     
-    int numLED = 5;
+    //int numLED = 1;
     // define char to hold 24 bit message that goes to LED
-    wsColor LED_color[numLED];
+    wsColor LED_color[5];
     
-    for(int i = 0; i < numLED; i++){
-        LED_color[i].r = 0x0F;
+    for(int i = 0; i < 5; i++){
+        LED_color[i].r = 0xFF;
         LED_color[i].g = 0x00;
         LED_color[i].b = 0x00;
     }
-    LED_color[0].r = 0x00;
-    LED_color[0].g = 0x00;
-    LED_color[0].b = 0x00;
-    ws2812b_setColor(LED_color,numLED);
-    
+    while(1){
+        ws2812b_setColor(LED_color,5);
+    }
 }
