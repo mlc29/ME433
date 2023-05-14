@@ -3,7 +3,7 @@
 
 #define LEDMAX 8    // Maximum number of LEDs possible
 
-void clear_LED(wsColor color[]);
+void clear_LEDs(wsColor color[]);
 
 int main(void) {
     // initialize PIC and NeoPixel strip
@@ -18,14 +18,14 @@ int main(void) {
     float sat = 1.0;            // sat is the saturation level, from 0 to 1, where 1 is full color and 0 is gray
     float bright = 0.5;         // bright sets the maximum brightness, from 0 to 1
     
-    clear_LED(LED_color);   // clears the LEDs so that if the number used is less than before,
+    clear_LEDs(LED_color);   // clears the LEDs so that if the number used is less than before,
                             // the extra LEDs do not stay on
     
     // hue: array to hold hue(color) values for each LED from 0-360
     // initialized to start each LED at an evenly spaced color
     int hue[numLED];
     for(int j=0; j<numLED; j++){
-        hue[j] = j*(360/numLED);
+        hue[j] = j*(120/numLED);
     }
     
     
@@ -51,7 +51,7 @@ int main(void) {
         }
         
         _CP0_SET_COUNT(0);
-        while(_CP0_GET_COUNT()<120000){}     // delay for visual effects
+        while(_CP0_GET_COUNT()<240000){}     // delay for visual effects
     }
     
 }
@@ -60,7 +60,7 @@ int main(void) {
  * 
  * wsColor color[]: struct that holds the values for each LED color
  */
-void clear_LED(wsColor color[]){
+void clear_LEDs(wsColor color[]){
     for(int k=0; k<LEDMAX; k++){
         color[k] = HSBtoRGB(0,0.0,0.0);     // set hue, sat, and bright to 0 for each LED
     }
