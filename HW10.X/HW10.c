@@ -23,35 +23,39 @@ int main(void) {
     
     // hue: array to hold hue(color) values for each LED from 0-360
     // initialized to start each LED at an evenly spaced color
+    int hueMIN = 0;
+    int hueMAX = 360;
     int hue[numLED];
-    for(int j=0; j<numLED; j++){
-        hue[j] = j*(120/numLED);
+    for(int i=0; i<numLED; i++){
+        hue[i] = hueMIN + i*(hueMAX/(4*numLED));
     }
     
+    int change[numLED];
+    for(int j=0; j<numLED; j++){
+        change[j] = 1;
+    }
     
     while(1){
         
-        // this loop checks to see in any hue values are at the max and resets them if they are
-        for(int x=0; x<numLED; x++){
-            if(hue[x] >= 360){
-                hue[x] = 0;
-            }
-        }
-        
         // sets the color for each LED
-        for(int y=0; y<numLED; y++){
-            LED_color[y] = HSBtoRGB(hue[y],sat,bright);
+        for(int x=0; x<numLED; x++){
+            LED_color[x] = HSBtoRGB(hue[x],sat,bright);
         }
         
         ws2812b_setColor(LED_color,numLED);     // sends the color values to the LEDs
         
-        // increments the hues of each LED by 1
+        // increments the hues of each LED by 1 or resets the hue if it reaches the max value
         for(int z=0; z<numLED; z++){
-            hue[z] = hue[z] + 1;
+            if(hue[z] < hueMAX){
+                hue[z] = hue[z] + 1;
+            }
+            else{
+                hue[z] = hueMIN;
+            }
         }
         
         _CP0_SET_COUNT(0);
-        while(_CP0_GET_COUNT()<240000){}     // delay for visual effects
+        while(_CP0_GET_COUNT()<480000){}     // delay for visual effects
     }
     
 }
