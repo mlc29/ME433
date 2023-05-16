@@ -11,7 +11,7 @@ int main(void) {
     ws2812b_setup();
     
     // number of LEDs being used
-    int numLED = 8;
+    int numLED = 5;
     
     // define variables for LED coloring
     wsColor LED_color[numLED];  // struct for LED coloring
