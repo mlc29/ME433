@@ -5,8 +5,8 @@ ser = serial.Serial('COM6',230400) # the name of your Pico port
 print('Opening port: ')
 print(ser.name)
 
-#ser.write(b'\r\n') # send a newline to request data
-#data_read = ser.read_until(b'\n',50) # read the echo
+ser.write(b'\r\n') # send a newline to request data
+data_read = ser.read_until(b'\n',50) # read the echo
 
 sampnum = 0
 index = 0
@@ -42,6 +42,7 @@ while True:
     com = int(com)
     print("Center of mass is: " + str(com))
     ser.write(com)
+    time.sleep(1)
     
 # print the raw color as a 16bit binary to double check bitshifting
 #for i in range(len(reds)):
